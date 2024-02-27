@@ -11,7 +11,7 @@ const { MongoClient } = require("mongodb");
 
 // The uri string must be the connection string for the database (obtained on Atlas).
 //const uri = "mongodb+srv://<user>:<password>@ckmdb.5oxvqja.mongodb.net/?retryWrites=true&w=majority";
-const uri = "mongodb+srv://guest:guest@cluster0.6k7ugaa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = "mongodb+srv://<user>:<pass>@cluster0.6k7ugaa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 // "mongodb+srv://<username>:<password>@cluster0.6k7ugaa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // NOTE: DO NOT GIVE ADMIN!!
@@ -44,28 +44,39 @@ app.get('/say/:name', function(req, res) {
 
 // Route to access database:
 app.get('/api/mongo/:item', function(req, res) { // :item is a filler variable. whatever is there in the url will be entered without colons
-const client = new MongoClient(uri);
-const searchKey = "{ partID: '" + req.params.item + "' }";
-console.log("Looking for: " + searchKey);
+  const client = new MongoClient(uri);
 
-async function run() {
-  try {
-    const database = client.db('ckmdb');
-    const parts = database.collection('cmps415');
+  listDatabases(client);
+  console.log('passed listDatabases');
 
-    // Hardwired Query for a part that has partID '12345'
-    // const query = { partID: '12345' };
-    // But we will use the parameter provided with the route
-    const query = { partID: req.params.item };
+  const searchKey = "{ partID: '" + req.params.item + "' }";
+  console.log("Looking for: " + searchKey);
 
-    const part = await parts.findOne(query);
-    console.log(part);
-    res.send('Found this: ' + JSON.stringify(part));  //Use stringify to print a json
+  async function run() {
+    try {
 
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
+      const database = client.db('ckmdb');
+      const parts = database.collection('cmps415');
+
+      // Hardwired Query for a part that has partID '12345'
+      // const query = { partID: '12345' };
+      // But we will use the parameter provided with the route
+      const query = { partID: req.params.item };
+
+      const part = await parts.findOne(query);
+      console.log(part);
+      res.send('Found this: ' + JSON.stringify(part));  //Use stringify to print a json
+
+    } finally {
+      // Ensures that the client will close when you finish/error
+      await client.close();
+    }
   }
-}
-run().catch(console.dir);
+    run().catch(console.dir);
 });
+
+async function listDatabases(client) {
+  databasesList = await client.db().admin().listDatabases();
+  console.log("Databases: ");
+  databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+}
