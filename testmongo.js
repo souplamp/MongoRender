@@ -11,8 +11,8 @@ const { MongoClient } = require("mongodb");
 
 // The uri string must be the connection string for the database (obtained on Atlas).
 //const uri = "mongodb+srv://<user>:<password>@ckmdb.5oxvqja.mongodb.net/?retryWrites=true&w=majority";
-const uri = "mongodb+srv://bigchungus:<password>@cluster0.6k7ugaa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-// "mongodb+srv://bigchungus:<password>@cluster0.6k7ugaa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = "mongodb+srv://guest:guest@cluster0.6k7ugaa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// "mongodb+srv://<username>:<password>@cluster0.6k7ugaa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // NOTE: DO NOT GIVE ADMIN!!
 // this code will be shared so give it credentials of a user you created with low priority.
