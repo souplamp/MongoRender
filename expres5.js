@@ -35,9 +35,9 @@ app.get('/showcookie', function (req, res) {
 });
 
 // Clear a specific cookie (sent as parameter)
-app.get('/clearcookie/:cookiename', function (req, res) {
+app.get('/clearcookie/:cookiename,:cookieman', function (req, res) {
   res.clearCookie(req.params.cookiename); //Shortcut for setting expiration in the past
-  res.send('Cookie deleted' + req.params.cookiename);
+  res.send('Cookie deleted' + req.params.cookiename + ' | ' + req.params.cookieman);
 });
 
 // Report cookies on console and browser
