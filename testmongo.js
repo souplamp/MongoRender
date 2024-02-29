@@ -11,7 +11,6 @@ const { MongoClient } = require("mongodb");
 
 // The uri string must be the connection string for the database (obtained on Atlas).
 // 'guest'
-const uri = "mongodb+srv://<user>:<pass>@cluster0.6k7ugaa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // NOTE: DO NOT GIVE ADMIN!!
 // this code will be shared so give it credentials of a user you created with low priority.
@@ -45,8 +44,8 @@ app.get('/say/:name', function(req, res) {
 app.get('/api/mongo/:item', function(req, res) { // :item is a filler variable. whatever is there in the url will be entered without colons
   const client = new MongoClient(uri);
 
-  listDatabases(client);
-  console.log('passed listDatabases');
+  // listDatabases(client);
+  // console.log('passed listDatabases');
 
   const searchKey = "{ partID: '" + req.params.item + "' }";
   console.log("Looking for: " + searchKey);
@@ -54,21 +53,20 @@ app.get('/api/mongo/:item', function(req, res) { // :item is a filler variable. 
   async function run() {
     try {
 
-      const database = client.db('ckmdb');
-      const parts = database.collection('cmps415');
+      const database = client.db('Database');
+      const parts = database.collection('MyStuff');
 
-      // Hardwired Query for a part that has partID '12345'
-      // const query = { partID: '12345' };
-      // But we will use the parameter provided with the route
       const query = { partID: req.params.item };
 
       const part = await parts.findOne(query);
       console.log(part);
-      res.send('Found this: ' + JSON.stringify(part));  //Use stringify to print a json
+      res.send('Found this: ' + JSON.stringify(part));  // Use stringify to print a json
 
     } finally {
+      
       // Ensures that the client will close when you finish/error
       await client.close();
+      
     }
   }
     run().catch(console.dir);
